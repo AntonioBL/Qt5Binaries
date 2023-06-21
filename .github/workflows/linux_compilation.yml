@@ -1,0 +1,32 @@
+name: Linux
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_architecture:
+        description: 'Build for Linux architecture: amd64, i386'
+        required: true
+        default: 'amd64'
+
+jobs:
+  build_qt5:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.11.0
+      with:
+        access_token: ${{ github.token }}
+    - name: Clone repository
+      uses: actions/checkout@v3
+    - name: setup QEMU
+      uses: docker/setup-qemu-action@v1
+    - name: Build Qt5
+      run: |
+        mkdir /qt5
+        chmod +x /Qt5Binaries/Recipe1 
+        sudo docker run -i -v "/qt5:/qt5" "${{ github.event.inputs.build_architecture }}/ubuntu/bionic" /bin/bash /Qt5Binaries/Recipe1 ${{ github.event.inputs.build_architecture }}
+#    - name: Upload artifacts on GitHub
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{ env.UPLOAD_ARTIFACT_NAME }}
+#        path: /qt5      
