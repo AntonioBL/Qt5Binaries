@@ -34,51 +34,31 @@ export TZ="Europe/London"
 
 # Specific dependencies for Qt5
 apt-get install -y \
-    '^libxcb.*-dev'
-
-apt-get install -y \
-    flite1-dev
-apt-get install -y \
-    libatspi2.0-dev
-apt-get install -y \
-    libavcodec-dev
-apt-get install -y \
-    libcups2-dev
-apt-get install -y \
-    libfontconfig1-dev
-apt-get install -y \
-    libfreetype6-dev
-apt-get install -y \
-    libgtk-3-dev
-apt-get install -y \
-    libgl1-mesa-dev
-apt-get install -y \
-    libglu1-mesa-dev
-apt-get install -y \
-    libicu-dev
-apt-get install -y \
-    libspeechd-dev
-apt-get install -y \
-    libx11-dev
-apt-get install -y \
-    libx11-xcb-dev
-apt-get install -y \
-    libxext-dev
-apt-get install -y \
-    libxfixes-dev
-apt-get install -y \
-    libxi-dev
-apt-get install -y \
-    libxkbcommon-dev
-apt-get install -y \
-    libxkbcommon-x11-dev
-apt-get install -y \
-    libxrender-dev
-apt-get install -y \
-    libxslt-dev
-apt-get install -y \
+    '^libxcb.*-dev' \
+    flite1-dev \
+    libatspi2.0-dev \
+    libavcodec-dev \
+    libcups2-dev \
+    libfontconfig1-dev \
+    libfreetype6-dev \
+    libgles2-mesa-dev \
+    libgles2-mesa \
+    libegl1-mesa \
+    libgtk-3-dev \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    libicu-dev \
+    libspeechd-dev \
+    libx11-dev \
+    libx11-xcb-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev \
+    libxslt-dev \
     speech-dispatcher
-
 
 # Specific dependencies for Qt WebEngine
 apt-get install -y \
