@@ -29,6 +29,9 @@ apt-get install -y \
   ruby \
   wget
 
+export DEBIAN_FRONTEND="noninteractive"
+export TZ="Europe/London"
+
 # Specific dependencies for Qt5
 apt-get install -y \
     '^libxcb.*-dev'
