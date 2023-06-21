@@ -172,7 +172,7 @@ cd build
 # Configure Qt
 ../configure -release -prefix /qt5 -opensource -confirm-license -platform linux-g++ -make examples \
 -nomake tests -skip qt3d -skip qtcanvas3d -skip qtdatavis3d -skip qtdoc -skip qtdocgallery -skip qtgamepad \
--skip qtpurchasing -skip qtsensors -skip qtwebengine -cups -accessibility -opengl desktop -gtk -pkg-config
+-skip qtpurchasing -skip qtsensors -cups -accessibility -opengl desktop -gtk -pkg-config
 
 # -opengl dynamic ?
 

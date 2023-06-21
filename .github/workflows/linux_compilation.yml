@@ -26,8 +26,8 @@ jobs:
         chmod +x /home/runner/work/Qt5Binaries/Qt5Binaries/Recipe1
         sudo cp /home/runner/work/Qt5Binaries/Qt5Binaries/Recipe1 /qt5
         sudo docker run -i -v "/qt5:/qt5" "${{ github.event.inputs.build_architecture }}/ubuntu:bionic" /bin/bash /qt5/Recipe1 ${{ github.event.inputs.build_architecture }}
-#    - name: Upload artifacts on GitHub
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: ${{ env.UPLOAD_ARTIFACT_NAME }}
-#        path: /qt5      
+    - name: Upload artifacts on GitHub
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.UPLOAD_ARTIFACT_NAME }}
+        path: /qt5      
