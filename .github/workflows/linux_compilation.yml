@@ -22,7 +22,7 @@ jobs:
       uses: docker/setup-qemu-action@v1
     - name: Build Qt5
       run: |
-        mkdir /qt5
+        sudo mkdir /qt5
         chmod +x /Qt5Binaries/Recipe1 
         sudo docker run -i -v "/qt5:/qt5" "${{ github.event.inputs.build_architecture }}/ubuntu/bionic" /bin/bash /Qt5Binaries/Recipe1 ${{ github.event.inputs.build_architecture }}
 #    - name: Upload artifacts on GitHub
