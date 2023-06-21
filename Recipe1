@@ -39,11 +39,11 @@ apt-get install -y \
     libatspi2.0-dev \
     libavcodec-dev \
     libcups2-dev \
+    libegl1-mesa \
     libfontconfig1-dev \
     libfreetype6-dev \
     libgles2-mesa-dev \
     libgles2-mesa \
-    libegl1-mesa \
     libgtk-3-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
@@ -138,9 +138,6 @@ apt-get install -y \
 #    libwrap0:$ARCH \
 #    libacl1:$ARCH \
 #    libpcre3:$ARCH \
-#    libgles2-mesa-dev:$ARCH \
-#    libgles2-mesa:$ARCH \
-#    libegl1-mesa:$ARCH \
 #    at-spi2-core:$ARCH \
 #    libxkbcommon0:$ARCH \
 #    libopus0:$ARCH \
@@ -175,11 +172,11 @@ cd build
 # Configure Qt
 ../configure -release -prefix /qt5 -opensource -confirm-license -platform linux-g++ -make examples \
 -nomake tests -skip qt3d -skip qtcanvas3d -skip qtdatavis3d -skip qtdoc -skip qtdocgallery -skip qtgamepad \
--skip qtpurchasing -skip qtsensors -skip qtwebengine -cups -accessibility -opengl dynamic -gtk -pkg-config
+-skip qtpurchasing -skip qtsensors -skip qtwebengine -cups -accessibility -opengl desktop -gtk -pkg-config
 
-# -opengl desktop ?
+# -opengl dynamic ?
 
-# make -j $(($(nproc)+1))
-# make install -j $(($(nproc)+1))
+make -j $(($(nproc)+1))
+make install -j $(($(nproc)+1))
 
 echo 'Recipe1 completed'
