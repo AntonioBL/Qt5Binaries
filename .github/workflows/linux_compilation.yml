@@ -29,5 +29,5 @@ jobs:
     - name: Upload artifacts on GitHub
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.UPLOAD_ARTIFACT_NAME }}
+        name: "qt5linux_${{ github.event.inputs.build_architecture }}"
         path: /qt5      
