@@ -23,11 +23,13 @@ apt-get install -y \
   g++ \
   git \
   gperf \
+  gzip \
   ninja-build \
   p7zip-full \
   perl \
   python \
   ruby \
+  tar \
   wget
 
 export DEBIAN_FRONTEND="noninteractive"
@@ -173,11 +175,16 @@ cd build
 # Configure Qt
 ../configure -release -prefix /qt5 -opensource -confirm-license -platform linux-g++ -make examples \
 -nomake tests -skip qt3d -skip qtcanvas3d -skip qtdatavis3d -skip qtdoc -skip qtdocgallery -skip qtgamepad \
--skip qtpurchasing -skip qtsensors -cups -accessibility -opengl desktop -gtk -pkg-config
+-skip qtpurchasing -skip qtsensors -skip qtwebengine -cups -accessibility -opengl desktop -gtk -pkg-config
 
 # -opengl dynamic ?
 
 make -j $(($(nproc)+1))
 make install -j $(($(nproc)+1))
+
+# Cleanup Docker image
+apt-get clean autoclean
+apt-get autoremove --purge -y
+rm -rf /tmp/* /var/{cache,log,backups}/* /var/lib/apt/*
 
 echo 'Recipe1 completed'
