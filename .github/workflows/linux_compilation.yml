@@ -30,7 +30,7 @@ jobs:
         tags: myimage:latest
         outputs: type=docker,dest=/tmp/myimage.tar
     - name: Cache Docker layers
-      uses: action/cache/save@v3
+      uses: actions/cache/save@v3
       id: cache
       with:
         path: /tmp/myimage.tar
@@ -42,7 +42,7 @@ jobs:
     - name: Clone repository
       uses: actions/checkout@v3
     - name: Restore cached Docker layers
-      uses: action/cache/restore@v3
+      uses: actions/cache/restore@v3
       id: cache
       with:
         path: /tmp/myimage.tar
