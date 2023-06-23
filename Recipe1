@@ -183,6 +183,7 @@ make -j $(($(nproc)+1))
 make install -j $(($(nproc)+1))
 
 # Cleanup Docker image
+cd .. && rm -rf build
 apt-get clean autoclean
 apt-get autoremove --purge -y
 rm -rf /tmp/* /var/{cache,log,backups}/* /var/lib/apt/*

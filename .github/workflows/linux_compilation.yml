@@ -22,7 +22,7 @@ jobs:
       uses: docker/setup-qemu-action@v2
     - name: setup Docker Buildx
       uses: docker/setup-buildx-action@v2
-    - name: Build and export Docker image (Qt5 without Qt webEngine)
+    - name: Build and export Docker image (Qt5 without Qt WebEngine)
       uses: docker/build-push-action@v4
       with:
         build-args: build_architecture=${{ github.event.inputs.build_architecture }}
@@ -52,6 +52,8 @@ jobs:
       uses: docker/setup-buildx-action@v2
     - name: Build Qt WebEngine
       run: |
+        sudo rm -rf /usr/local/lib/android
+        sudo docker rmi $(docker images -a --filter=dangling=true -q)
         sudo mkdir /output
         chmod +x /home/runner/work/Qt5Binaries/Qt5Binaries/Recipe2
         sudo cp /home/runner/work/Qt5Binaries/Qt5Binaries/Recipe1 /output

@@ -10,12 +10,11 @@ set -e # Halt on error
 set -x # Be verbose
 
 cd qt5source
+mkdir build
 cd build
 
 # Configure Qt
-../configure -release -prefix /qt5 -opensource -confirm-license -platform linux-g++ -make examples \
--nomake tests -skip qt3d -skip qtcanvas3d -skip qtdatavis3d -skip qtdoc -skip qtdocgallery -skip qtgamepad \
--skip qtpurchasing -skip qtsensors -cups -accessibility -opengl desktop -gtk -pkg-config
+/qt5/bin/qmake ../qtwebengine -- -no-webegine-geolocation
 
 # -opengl dynamic ?
 
