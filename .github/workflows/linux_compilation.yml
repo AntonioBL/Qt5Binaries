@@ -60,7 +60,8 @@ jobs:
         sudo cp /home/runner/work/Qt5Binaries/Qt5Binaries/Recipe1 /output
         sudo cp /home/runner/work/Qt5Binaries/Qt5Binaries/Recipe2 /output
         sudo docker load --input /tmp/myimage.tar
-        sudo docker run -i -v "/output:/output" "myimage:latest" /bin/bash /qt5/Recipe2 ${{ github.event.inputs.build_architecture }}
+        sudo rm -rf /tmp/myimage.tar
+        sudo docker run -i -v "/output:/output" "myimage:latest" /bin/bash /output/Recipe2 ${{ github.event.inputs.build_architecture }}
     - name: Upload artifacts on GitHub
       uses: actions/upload-artifact@v3
       with:
