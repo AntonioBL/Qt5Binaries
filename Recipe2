@@ -14,7 +14,7 @@ mkdir build
 cd build
 
 # Configure Qt
-/qt5/bin/qmake ../qtwebengine -- -no-webegine-geolocation
+/qt5/bin/qmake ../qtwebengine --
 
 # -opengl dynamic ?
 
