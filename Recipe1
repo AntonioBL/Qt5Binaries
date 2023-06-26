@@ -159,7 +159,7 @@ apt-get clean
 git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
 cd qt5source
 git checkout kde/5.15
-git submodule update --init --recursive
+git submodule update --init --recursive --depth 1
 
 
 # Workaround for armhf case for Qt 5.x

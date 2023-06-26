@@ -34,6 +34,7 @@ jobs:
       id: cache
       with:
         path: /tmp/myimage.tar
+        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
 
   build_qt5_qtwebengine:
     runs-on: ubuntu-latest
@@ -46,6 +47,7 @@ jobs:
       id: cache
       with:
         path: /tmp/myimage.tar
+        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
     - name: setup QEMU
       uses: docker/setup-qemu-action@v2
     - name: setup Docker Buildx
