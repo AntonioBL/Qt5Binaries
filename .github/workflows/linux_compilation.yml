@@ -55,7 +55,6 @@ jobs:
     - name: Build Qt WebEngine
       run: |
         sudo rm -rf /usr/local/lib/android
-        sudo docker rmi $(docker images -a --filter=dangling=true -q)
         sudo mkdir /output
         chmod +x /home/runner/work/Qt5Binaries/Qt5Binaries/Recipe2
         sudo cp /home/runner/work/Qt5Binaries/Qt5Binaries/Recipe1 /output
