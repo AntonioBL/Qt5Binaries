@@ -85,7 +85,6 @@ apt-get install -y \
     libharfbuzz-dev \
     libharfbuzz-icu0 \
     libharfbuzz0b \
-    libharfbuzz0-udeb \
     libicu-dev \
     libicu-le-hb-dev \
     libicu60 \
