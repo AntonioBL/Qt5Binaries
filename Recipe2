@@ -14,7 +14,7 @@ mkdir build
 cd build
 
 # Configure Qt
-/qt5/bin/qmake ../qtwebengine -- --webengine-icu=system --webengine-ffmpeg=system --webengine-opus=system --webengine-webp=system --webengine-spellchecker=no
+/qt5/bin/qmake ../qtwebengine -- --webengine-spellchecker=no
 
 # -opengl dynamic ?
 

@@ -67,8 +67,14 @@ apt-get install -y \
 # Specific dependencies for Qt WebEngine
 apt-get install -y \
     ffmpeg \
+    icu-devtools \
     libasound2-dev \
     libavcodec-dev \
+    libavdevice-dev \
+    libavfilter-dev \
+    libavformat-dev \
+    libavresample-dev \
+    libavutil-dev \
     libcap-dev \
     libcups2 \
     libdbus-1-dev \
@@ -76,6 +82,13 @@ apt-get install -y \
     libegl1-mesa-dev \
     libevent-dev \
     libexpat1-dev \
+    libharfbuzz-dev \
+    libharfbuzz-icu0 \
+    libharfbuzz0b \
+    libharfbuzz0-udeb \
+    libicu-dev \
+    libicu-le-hb-dev \
+    libicu60 \
     libnss3-dev \
     libopus0 \
     libopus-dev \
@@ -100,7 +113,8 @@ apt-get install -y \
     libwebpmux3 \
     libwebp-dev \
     libxau-dev \
-    nodejs
+    nodejs \
+    opus-tools
 
 # Specific dependencies for Qt Multimedia
 apt-get install -y \
