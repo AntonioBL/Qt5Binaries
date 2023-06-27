@@ -66,14 +66,23 @@ apt-get install -y \
 
 # Specific dependencies for Qt WebEngine
 apt-get install -y \
+    ffmpeg \
     libasound2-dev \
+    libavcodec-dev \
     libcap-dev \
+    libcups2 \
     libdbus-1-dev \
     libdrm-dev \
     libegl1-mesa-dev \
     libevent-dev \
+    libexpat1-dev \
     libnss3-dev \
+    libopus0 \
+    libopus-dev \
+    libopusfile0 \
+    libopusfile-dev \
     libpci-dev \
+    libprotobuf-dev \
     libpulse-dev \
     libsnappy-dev \
     libre2-dev \
@@ -86,6 +95,11 @@ apt-get install -y \
     libxss-dev \
     libxtst-dev \
     libudev-dev \
+    libwebp6 \
+    libwebpdemux2 \
+    libwebpmux3 \
+    libwebp-dev \
+    libxau-dev \
     nodejs
 
 # Specific dependencies for Qt Multimedia
@@ -103,54 +117,36 @@ apt-get install -y \
     openssl
 
 # sudo apt-get install  libatkmm-1.6-dev libbz2-dev 
-# libxcb-composite0 libxcb-cursor0 libxcb-damage0 libxcb-dpms0
-# libxcb-dri2-0 libxcb-dri3-0 libxcb-ewmh2 libxcb-glx0
-# libxcb-icccm4 libxcb-image0 libxcb-keysyms1 
-# libxcb-present0 libxcb-randr0 libxcb-record0 libxcb-render-util0
-# libxcb-render0 libxcb-res0 libxcb-screensaver0
-# libxcb-shape0 libxcb-shm0 libxcb-sync1
-# libxcb-util1 libxcb-xevie0 libxcb-xf86dri0 libxcb-xfixes0
-# libxcb-xinerama0 libxcb-xkb1 libxcb-xprint0
-# libxcb-xtest0 libxcb-xv0 libxcb-xvmc0 libxcb1
 
 
-#    xkb-data:$ARCH \
-#    libxkbcommon-x11-0:$ARCH \
-#    libsndfile1-dev:$ARCH \
-#    portaudio19-dev:$ARCH \
-#    libportmidi-dev:$ARCH \
-#    libmp3lame-dev:$ARCH \
-#    libcups2:$ARCH \
-#    libfontconfig1:$ARCH \
-#    libwebp-dev:$ARCH \
-#    libprotobuf-dev:$ARCH \
-#    libjsoncpp-dev:$ARCH \
-#    libxslt1-dev:$ARCH \
-#    alsa-tools:$ARCH \
-#    alsa-utils:$ARCH \
-#    libasound2-plugins:$ARCH \
-#    pulseaudio:$ARCH \
-#    liblcms2-2:$ARCH \
-#    libmng1:$ARCH \
-#    libpulse0:$ARCH \
-#    libjson-c-dev:$ARCH \
-#    libexpat1-dev:$ARCH \
-#    libdbus-1-3:$ARCH \
-#    libglib2.0-0:$ARCH \
-#    libkeyutils-dev:$ARCH \
-#    libwrap0:$ARCH \
-#    libacl1:$ARCH \
-#    libpcre3:$ARCH \
-#    at-spi2-core:$ARCH \
-#    libxkbcommon0:$ARCH \
-#    libopus0:$ARCH \
-#    libopus-dev:$ARCH \
-#    libopusfile0:$ARCH \
-#    libopusfile-dev:$ARCH \
-#    libpango1.0-dev:$ARCH \
-#    x11proto-dev:$ARCH \
-#    shared-mime-info:$ARCH \
-#    libxau-dev:$ARCH \
+#    xkb-data \
+#    libxkbcommon-x11-0 \
+#    libsndfile1-dev \
+#    portaudio19-dev \
+#    libportmidi-dev \
+#    libmp3lame-dev \
+#    libfontconfig1 \
+#    libjsoncpp-dev \
+#    alsa-tools \
+#    alsa-utils \
+#    libasound2-plugins \
+#    pulseaudio \
+#    liblcms2-2 \
+#    libmng1 \
+#    libpulse0 \
+#    libjson-c-dev \
+#    libdbus-1-3 \
+#    libglib2.0-0 \
+#    libkeyutils-dev \
+#    libwrap0 \
+#    libacl1 \
+#    libpcre3 \
+#    at-spi2-core \
+#    libxkbcommon0 \
+#    libpango1.0-dev \
+#    x11proto-dev \
+#    shared-mime-info \
+
 
 apt-get clean
 
