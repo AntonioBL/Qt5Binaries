@@ -18,7 +18,7 @@ cd build
 
 # -opengl dynamic ?
 
-make -j $(($(nproc)+1))
+NINJAJOBS=-j$(($(nproc))) make -j $(($(nproc)))
 make install -j $(($(nproc)+1))
 
 echo 'Compilation and installation completed'
