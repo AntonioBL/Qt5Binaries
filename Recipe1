@@ -107,13 +107,14 @@ apt-get install -y \
     libxss-dev \
     libxtst-dev \
     libudev-dev \
-    libwebp6 \
-    libwebpdemux2 \
-    libwebpmux3 \
-    libwebp-dev \
     libxau-dev \
     nodejs \
     opus-tools
+
+#    libwebp6 \
+#    libwebpdemux2 \
+#    libwebpmux3 \
+#    libwebp-dev \
 
 # Specific dependencies for Qt Multimedia
 apt-get install -y \

@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_qt5:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - name: Cancel Previous Runs
       uses: styfle/cancel-workflow-action@0.11.0
@@ -37,7 +37,7 @@ jobs:
         key: ${{ runner.os }}-${{ github.event.inputs.build_architecture }}
 
   build_qt5_qtwebengine:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: build_qt5
     steps:
     - name: Clone repository
