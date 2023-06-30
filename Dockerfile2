@@ -1,0 +1,6 @@
+ARG build_architecture=amd64
+FROM myimage:latest
+
+ADD https://raw.githubusercontent.com/AntonioBL/Qt5Binaries/main/Recipe2 /
+
+RUN chmod +x Recipe2 && ./Recipe2 $build_architecture

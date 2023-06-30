@@ -13,23 +13,29 @@ cd qt5source
 mkdir build
 cd build
 
-# Configure Qt
+# Configure Qt WebEngine
 /qt5/bin/qmake ../qtwebengine -- --webengine-spellchecker=no
 
 # -opengl dynamic ?
 
-# NINJAJOBS=-j$(($(nproc))) 
-make -j $(($(nproc)))
-make install -j $(($(nproc)+1))
+export NINJAJOBS=-j$(($(nproc))) 
+timeout 300m make -j $(($(nproc))) || true
+# make install -j $(($(nproc)+1))
 
-echo 'Compilation and installation completed'
+# echo 'Compilation and installation completed'
 
 # Allow non-root users to access the files
-chmod -R a+rwx /qt5
+# chmod -R a+rwx /qt5
 
-tar -zcf qt5linux_${ARCH}.tar.gz /qt5 
-mv qt5linux_${ARCH}.tar.gz /output
+# tar -zcf qt5linux_${ARCH}.tar.gz /qt5 
+# mv qt5linux_${ARCH}.tar.gz /output
 
-chmod -R a+rwx /output
+# chmod -R a+rwx /output
 
-echo 'Recipe2 completed'
+
+# Cleanup Docker image
+apt-get clean autoclean
+apt-get autoremove --purge -y
+rm -rf /tmp/* /var/{cache,log,backups}/* /var/lib/apt/*
+
+# echo 'Recipe2 completed'
