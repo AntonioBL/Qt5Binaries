@@ -28,14 +28,13 @@ jobs:
         build-args: build_architecture=${{ github.event.inputs.build_architecture }}
         context: .
         tags: myimage:latest
-        cache-from: type=gha
-        cache-to: type=gha
-#    - name: Cache Docker layers
-#      uses: actions/cache/save@v3
-#      id: cache
-#      with:
-#        path: /tmp/myimage.tar
-#        key: ${{ runner.os }}-${{ github.event.inputs.build_architecture }}
+        outputs: type=docker,dest=/tmp/myimage2.tar
+    - name: Cache Docker layers
+      uses: actions/cache/save@v3
+      id: cache
+      with:
+        path: /tmp/myimage.tar
+        key: ${{ runner.os }}-${{ github.event.inputs.build_architecture }}
 
   build_qt5_qtwebengine_1:
     runs-on: ubuntu-latest
@@ -43,12 +42,12 @@ jobs:
     steps:
     - name: Clone repository
       uses: actions/checkout@v3
-#    - name: Restore cached Docker layers
-#      uses: actions/cache/restore@v3
-#      id: cache
-#      with:
-#        path: /tmp/myimage.tar
-#        key: ${{ runner.os }}-${{ github.event.inputs.build_architecture }}
+    - name: Restore cached Docker layers
+      uses: actions/cache/restore@v3
+      id: cache
+      with:
+        path: /tmp/myimage.tar
+        key: ${{ runner.os }}-${{ github.event.inputs.build_architecture }}
     - name: setup QEMU
       uses: docker/setup-qemu-action@v2
     - name: setup Docker Buildx
@@ -60,14 +59,11 @@ jobs:
 #        sudo docker load --input /tmp/myimage.tar
 #        sudo rm -rf /tmp/myimage.tar
     - name: Build and export 1st part of compilation
-      uses: docker/build-push-action@v4
-      with:
-        build-args: build_architecture=${{ github.event.inputs.build_architecture }}
-        context: .
-        tags: myimage2:latest
-        cache-from: type=gha
-        outputs: type=docker,dest=/tmp/myimage2.tar
-        file: Dockerfile2
+      run: |
+        sudo docker load --input /tmp/myimage.tar
+        sudo rm -rf /tmp/myimage.tar
+        sudo docker build . -f Dockerfile2 --tag "myimage2:latest" --build-arg ${{ github.event.inputs.build_architecture }}
+        sudo docker save --output /tmp/myimage2.tar "myimage2:latest"
     - name: Cache Docker layers
       uses: actions/cache/save@v3
       id: cache2
