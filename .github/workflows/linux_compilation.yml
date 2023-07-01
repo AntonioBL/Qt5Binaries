@@ -64,6 +64,7 @@ jobs:
         sudo rm -rf /tmp/myimage.tar
         sudo docker build . -f Dockerfile2 --tag "myimage2:latest" --build-arg ${{ github.event.inputs.build_architecture }}
         sudo docker save --output /tmp/myimage2.tar "myimage2:latest"
+        sudo chmod -R a+rwx /tmp/myimage2.tar
     - name: Cache Docker layers
       uses: actions/cache/save@v3
       id: cache2
