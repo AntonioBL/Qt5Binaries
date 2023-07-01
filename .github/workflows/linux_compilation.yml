@@ -28,7 +28,7 @@ jobs:
         build-args: build_architecture=${{ github.event.inputs.build_architecture }}
         context: .
         tags: myimage:latest
-        outputs: type=docker,dest=/tmp/myimage2.tar
+        outputs: type=docker,dest=/tmp/myimage.tar
     - name: Cache Docker layers
       uses: actions/cache/save@v3
       id: cache
