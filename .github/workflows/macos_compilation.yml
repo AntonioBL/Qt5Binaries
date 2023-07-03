@@ -1,0 +1,139 @@
+name: Build_macOS_Universal
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_qt:
+    runs-on: macos-12
+    steps:
+    - name: Setup
+      run: |
+        brew install ninja
+        brew uninstall postgresql@14 # not Universal
+    - name: Download and unpack source
+      run: |
+        QT_URL="https://download.qt.io/official_releases/qt/5.15/5.15.10/single/qt-everywhere-opensource-src-5.15.10.tar.xz"
+        wget -q "${QT_URL}" -O - | tar xJvf -
+    - name: Configure
+      run: |
+        mkdir build
+        cd build
+        ../qt-everywhere-src-5.15.10/configure -prefix ../install -opensource -confirm-license -release -no-debug-and-release \
+            -nomake examples -nomake tests \
+            -skip qt3d \
+            -skip qtcharts \
+            -skip qtdatavis3d \
+            -skip qtlocation \
+            -skip qtlottie \
+            -skip qtpurchasing \
+            -skip qtquick3d \
+            -skip qtquicktimeline \
+            -skip qtscript \
+            -skip qtspeech \
+            -skip qtvirtualkeyboard \
+            -skip qtwebengine \
+            -skip qtwebglplugin \
+            QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
+    - name: Build
+      working-directory: ./build
+      run: |
+        echo "Note: using $((`sysctl -n hw.ncpu`+1)) parallel jobs"
+        make -j$((`sysctl -n hw.ncpu`+1))
+    - name: Install
+      working-directory: ./build
+      run: |
+        make install -j1
+    - name: Package
+      working-directory: ./install
+      run: |
+        zip -r "../Qt 5.15.10 for macOS.zip" .
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: "Qt 5.15.10 for macOS"
+        path: "Qt 5.15.10 for macOS.zip"
+
+  build_qtwebengine:
+    runs-on: macos-12
+    needs: [build_qt]
+    steps:
+    - name: Setup
+      run: |
+        brew install ninja
+        brew uninstall postgresql@14 # not Universal
+        brew install coreutils
+    - name: Download and unpack source
+      run: |
+        QT_URL="https://download.qt.io/official_releases/qt/5.15/5.15.10/single/qt-everywhere-opensource-src-5.15.10.tar.xz"
+        wget -q "${QT_URL}" -O - | tar xJvf -
+    - name: Download already-built Qt
+      uses: actions/download-artifact@v3
+      with:
+        name: "Qt 5.15.10 for macOS"
+    - name: Unpack already-built Qt
+      run: |
+        unzip "Qt 5.15.10 for macOS.zip" -d ./install
+    - name: Configure
+      run: |
+        mkdir build
+        cd build
+        ../install/bin/qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" \
+            ../qt-everywhere-src-5.15.10/qtwebengine \
+            -- -no-webengine-geolocation -webengine-proprietary-codecs
+    - name: Build
+      working-directory: ./build
+      run: |
+        echo "Note: using $((`sysctl -n hw.ncpu`+1)) parallel jobs"
+        gtimeout 300m make -j$((`sysctl -n hw.ncpu`+1)) NINJAJOBS=-j2 || true
+    - name: Cache Build Folder
+      uses: actions/cache/save@v3
+      id: cache
+      with:
+        path: ./build
+        key: ${{ runner.os }}-universal
+
+
+  build_qtwebengine_step2:
+    runs-on: macos-12
+    needs: [build_qtwebengine]
+    steps:
+    - name: Setup
+      run: |
+        brew install ninja
+        brew uninstall postgresql@14 # not Universal
+    - name: Download and unpack source
+      run: |
+        QT_URL="https://download.qt.io/official_releases/qt/5.15/5.15.10/single/qt-everywhere-opensource-src-5.15.10.tar.xz"
+        wget -q "${QT_URL}" -O - | tar xJvf -
+    - name: Download already-built Qt
+      uses: actions/download-artifact@v3
+      with:
+        name: "Qt 5.15.10 for macOS"
+    - name: Unpack already-built Qt
+      run: |
+        unzip "Qt 5.15.10 for macOS.zip" -d ./install
+    - name: Restore cached Build folder
+      uses: actions/cache/restore@v3
+      id: cache
+      with:
+        path: ./build
+        key: ${{ runner.os }}-universal
+    - name: Build
+      working-directory: ./build
+      run: |
+        echo "Note: using $((`sysctl -n hw.ncpu`+1)) parallel jobs"
+        make -j$((`sysctl -n hw.ncpu`+1)) NINJAJOBS=-j2
+    - name: Install
+      working-directory: ./build
+      run: |
+        make install -j1
+    - name: Package
+      working-directory: ./install
+      run: |
+        zip -r "../Qt 5.15.10 for macOS with QtWebEngine.zip" .
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: "Qt 5.15.10 for macOS with QtWebEngine"
+        path: "Qt 5.15.10 for macOS with QtWebEngine.zip"
