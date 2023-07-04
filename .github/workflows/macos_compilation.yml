@@ -11,15 +11,17 @@ jobs:
       run: |
         brew install ninja
         brew uninstall postgresql@14 # not Universal
-    - name: Download and unpack source
+    - name: Download source
       run: |
-        QT_URL="https://download.qt.io/official_releases/qt/5.15/5.15.10/single/qt-everywhere-opensource-src-5.15.10.tar.xz"
-        wget -q "${QT_URL}" -O - | tar xJvf -
+        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
+        cd qt5source
+        git checkout kde/5.15
+        git submodule update --init --recursive --depth 1
     - name: Configure
       run: |
         mkdir build
         cd build
-        ../qt-everywhere-src-5.15.10/configure -prefix ../install -opensource -confirm-license -release -no-debug-and-release \
+        ../qt5source/configure -prefix ../install -opensource -confirm-license -release -no-debug-and-release \
             -nomake examples -nomake tests \
             -skip qt3d \
             -skip qtcharts \
@@ -63,10 +65,12 @@ jobs:
         brew install ninja
         brew uninstall postgresql@14 # not Universal
         brew install coreutils
-    - name: Download and unpack source
+    - name: Download source
       run: |
-        QT_URL="https://download.qt.io/official_releases/qt/5.15/5.15.10/single/qt-everywhere-opensource-src-5.15.10.tar.xz"
-        wget -q "${QT_URL}" -O - | tar xJvf -
+        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
+        cd qt5source
+        git checkout kde/5.15
+        git submodule update --init --recursive --depth 1
     - name: Download already-built Qt
       uses: actions/download-artifact@v3
       with:
@@ -79,7 +83,7 @@ jobs:
         mkdir build
         cd build
         ../install/bin/qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" \
-            ../qt-everywhere-src-5.15.10/qtwebengine \
+            ../qt5source/qtwebengine \
             -- -no-webengine-geolocation -webengine-proprietary-codecs
     - name: Build
       working-directory: ./build
@@ -102,10 +106,12 @@ jobs:
       run: |
         brew install ninja
         brew uninstall postgresql@14 # not Universal
-    - name: Download and unpack source
+    - name: Download source
       run: |
-        QT_URL="https://download.qt.io/official_releases/qt/5.15/5.15.10/single/qt-everywhere-opensource-src-5.15.10.tar.xz"
-        wget -q "${QT_URL}" -O - | tar xJvf -
+        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
+        cd qt5source
+        git checkout kde/5.15
+        git submodule update --init --recursive --depth 1
     - name: Download already-built Qt
       uses: actions/download-artifact@v3
       with:
