@@ -22,7 +22,7 @@ jobs:
         mkdir build
         cd build
         ../qt5source/configure -prefix ../install -opensource -confirm-license -release -no-debug-and-release \
-            -nomake examples -nomake tests -c++std c++11 \
+            -nomake examples -nomake tests -c++std c++14 \
             -skip qt3d \
             -skip qtcharts \
             -skip qtdatavis3d \
@@ -82,7 +82,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        export QMAKE_CXXFLAGS="-std=c++11 $QMAKE_CXXFLAGS"
+        export QMAKE_CXXFLAGS="-std=c++14 $QMAKE_CXXFLAGS"
         ../install/bin/qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" \
             ../qt5source/qtwebengine \
             -- -no-webengine-geolocation -webengine-proprietary-codecs
