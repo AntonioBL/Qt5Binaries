@@ -17,6 +17,9 @@ jobs:
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
+        cd qtwebengine/src/3rdparty/chromium
+        git revert --no-commit 7ff159da
+        cd ../../../..
     - name: Configure
       run: |
         mkdir build
@@ -71,6 +74,9 @@ jobs:
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
+        cd qtwebengine/src/3rdparty/chromium
+        git revert --no-commit 7ff159da
+        cd ../../../..
     - name: Download already-built Qt
       uses: actions/download-artifact@v3
       with:
@@ -82,7 +88,6 @@ jobs:
       run: |
         mkdir build
         cd build
-        export QMAKE_CXXFLAGS="-fms-compatibility $QMAKE_CXXFLAGS"
         ../install/bin/qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" \
             ../qt5source/qtwebengine \
             -- -no-webengine-geolocation -webengine-proprietary-codecs
@@ -113,6 +118,9 @@ jobs:
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
+        cd qtwebengine/src/3rdparty/chromium
+        git revert --no-commit 7ff159da
+        cd ../../../..
     - name: Download already-built Qt
       uses: actions/download-artifact@v3
       with:
