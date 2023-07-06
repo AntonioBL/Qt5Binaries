@@ -18,10 +18,9 @@ jobs:
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
-        cd qtwebengine/src/3rdparty/chromium
-        git fetch --unshallow
-        git revert --no-commit 7ff159da
-        cd ../../../..
+        cd qtwebengine/src/3rdparty
+        git apply -R ../../../../7ff159da.patch
+        cd ../../..
     - name: Configure
       run: |
         mkdir build
@@ -77,10 +76,9 @@ jobs:
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
-        cd qtwebengine/src/3rdparty/chromium
-        git fetch --unshallow
-        git revert --no-commit 7ff159da
-        cd ../../../..
+        cd qtwebengine/src/3rdparty
+        git apply -R ../../../../7ff159da.patch
+        cd ../../..
     - name: Download already-built Qt
       uses: actions/download-artifact@v3
       with:
@@ -123,10 +121,9 @@ jobs:
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
-        cd qtwebengine/src/3rdparty/chromium
-        git fetch --unshallow
-        git revert --no-commit 7ff159da
-        cd ../../../..
+        cd qtwebengine/src/3rdparty
+        git apply -R ../../../../7ff159da.patch
+        cd ../../..
     - name: Download already-built Qt
       uses: actions/download-artifact@v3
       with:
