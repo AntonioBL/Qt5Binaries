@@ -13,11 +13,13 @@ jobs:
         brew uninstall postgresql@14 # not Universal
     - name: Download source
       run: |
+        rm -rf /User/runner/Libary/Android
         git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
         cd qtwebengine/src/3rdparty/chromium
+        git fetch --unshallow
         git revert --no-commit 7ff159da
         cd ../../../..
     - name: Configure
@@ -70,11 +72,13 @@ jobs:
         brew install coreutils
     - name: Download source
       run: |
+        rm -rf /User/runner/Libary/Android
         git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
         cd qtwebengine/src/3rdparty/chromium
+        git fetch --unshallow
         git revert --no-commit 7ff159da
         cd ../../../..
     - name: Download already-built Qt
@@ -114,11 +118,13 @@ jobs:
         brew uninstall postgresql@14 # not Universal
     - name: Download source
       run: |
+        rm -rf /User/runner/Libary/Android
         git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
         cd qtwebengine/src/3rdparty/chromium
+        git fetch --unshallow
         git revert --no-commit 7ff159da
         cd ../../../..
     - name: Download already-built Qt
