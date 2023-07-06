@@ -7,6 +7,8 @@ jobs:
   build_qt:
     runs-on: macos-12
     steps:
+    - name: Clone repository
+      uses: actions/checkout@v3
     - name: Setup
       run: |
         brew install ninja
@@ -64,6 +66,8 @@ jobs:
     runs-on: macos-12
     needs: [build_qt]
     steps:
+    - name: Clone repository
+      uses: actions/checkout@v3
     - name: Setup
       run: |
         brew install ninja
@@ -110,6 +114,8 @@ jobs:
     runs-on: macos-12
     needs: [build_qtwebengine]
     steps:
+    - name: Clone repository
+      uses: actions/checkout@v3
     - name: Setup
       run: |
         brew install ninja
@@ -122,6 +128,7 @@ jobs:
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
         cd qtwebengine/src/3rdparty
+        echo $PWD
         git apply -R ../../../../7ff159da.patch
         cd ../../..
     - name: Download already-built Qt
