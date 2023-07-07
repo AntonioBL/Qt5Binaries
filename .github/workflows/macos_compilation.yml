@@ -147,8 +147,8 @@ jobs:
     - name: Build
       working-directory: ./build
       run: |
-        echo "Note: using $((`sysctl -n hw.ncpu`+1)) parallel jobs"
-        make -j$((`sysctl -n hw.ncpu`+1)) NINJAJOBS=-j2
+        echo "Note: using $((`sysctl -n hw.ncpu`)) parallel jobs"
+        make -j$((`sysctl -n hw.ncpu`)) NINJAJOBS=-j2
     - name: Install
       working-directory: ./build
       run: |
