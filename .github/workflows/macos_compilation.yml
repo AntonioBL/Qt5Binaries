@@ -109,7 +109,6 @@ jobs:
         path: ./build
         key: ${{ runner.os }}-universal
 
-
   build_qtwebengine_step2:
     runs-on: macos-12
     needs: [build_qtwebengine]
@@ -120,6 +119,7 @@ jobs:
       run: |
         brew install ninja
         brew uninstall postgresql@14 # not Universal
+        brew install coreutils
     - name: Download source
       run: |
         rm -rf /User/runner/Libary/Android
@@ -128,7 +128,6 @@ jobs:
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
         cd qtwebengine/src/3rdparty
-        echo $PWD
         git apply -R ../../../../7ff159da.patch
         cd ../../..
     - name: Download already-built Qt
@@ -147,12 +146,57 @@ jobs:
     - name: Build
       working-directory: ./build
       run: |
+        echo "Note: using $((`sysctl -n hw.ncpu`+1)) parallel jobs"
+        gtimeout 300m make -j$((`sysctl -n hw.ncpu`+1)) NINJAJOBS=-j2 || true
+    - name: Cache Build Folder
+      uses: actions/cache/save@v3
+      id: cache2
+      with:
+        path: ./build
+        key: ${{ runner.os }}-universal-2
+
+  build_qtwebengine_step3:
+    runs-on: macos-12
+    needs: [build_qtwebengine_step2]
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v3
+    - name: Setup
+      run: |
+        brew install ninja
+        brew uninstall postgresql@14 # not Universal
+    - name: Download source
+      run: |
+        rm -rf /User/runner/Libary/Android
+        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
+        cd qt5source
+        git checkout kde/5.15
+        git submodule update --init --recursive --depth 1
+        cd qtwebengine/src/3rdparty
+        git apply -R ../../../../7ff159da.patch
+        cd ../../..
+    - name: Download already-built Qt
+      uses: actions/download-artifact@v3
+      with:
+        name: "Qt 5.15.10 for macOS"
+    - name: Unpack already-built Qt
+      run: |
+        unzip "Qt 5.15.10 for macOS.zip" -d ./install
+    - name: Restore cached Build folder
+      uses: actions/cache/restore@v3
+      id: cache2
+      with:
+        path: ./build
+        key: ${{ runner.os }}-universal-2
+    - name: Build
+      working-directory: ./build
+      run: |
         echo "Note: using $((`sysctl -n hw.ncpu`)) parallel jobs"
         make -j$((`sysctl -n hw.ncpu`)) NINJAJOBS=-j2
     - name: Install
       working-directory: ./build
       run: |
-        make install -j1
+        make install -j2
     - name: Package
       working-directory: ./install
       run: |
