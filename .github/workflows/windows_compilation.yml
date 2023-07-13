@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@v3
     - name: Download source
       run: |
-        rd C:\Android /s /q
+        Remove-Item -Path C:\Android -Force -Recurse
         choco install -y git.install
         choco install -y wget
         choco install -y jom
