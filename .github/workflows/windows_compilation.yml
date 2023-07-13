@@ -22,7 +22,7 @@ jobs:
         git submodule update --init --recursive --depth 1
         dir "C:\Program Files"
         dir "C:\Program Files (x86)"
-        dir "C:\Program Files\OpenSSL-Win64"
+        dir "C:\Program Files\OpenSSL"
         dir "C:\Program Files (x86)\Microsoft Visual Studio\2019"
         dir "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC"
         dir "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build"
