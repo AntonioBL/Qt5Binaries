@@ -1,0 +1,200 @@
+name: Build_Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_qt:
+    runs-on: windows-2022
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v3
+    - name: Download source
+      run: |
+        rmdir /s /q C:\Android
+        choco install -y git.install
+        choco install -y wget
+        choco install -y jom
+        choco install openssl
+        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
+        cd qt5source
+        git checkout kde/5.15
+        git submodule update --init --recursive --depth 1
+        echo "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build" >> $GITHUB_PATH
+        echo "%CD%\gnuwin32\bin" >> $GITHUB_PATH
+    - name: Configure
+      run: |
+        mkdir build
+        cd build
+        vcvarsall x64 10.0.19041.0
+        dir "C:\Program Files\OpenSSL-Win64"
+        ..\qt5source\configure -prefix ..\install -opensource -confirm-license -release -no-debug-and-release \
+            -nomake tests \
+            -skip qt3d \
+            -skip qtcharts \
+            -skip qtdatavis3d \
+            -skip qtlocation \
+            -skip qtlottie \
+            -skip qtpurchasing \
+            -skip qtquick3d \
+            -skip qtquicktimeline \
+            -skip qtscript \
+            -skip qtspeech \
+            -skip qtvirtualkeyboard \
+            -skip qtwebengine \
+            -skip qtwebglplugin \
+            -opengl dynamic \
+            -qt-zlib \
+            -qt-freetype \
+            -qt-harfbuzz \
+            -qt-libpng \
+            -qt-libjpeg \
+            -openssl-runtime OPENSSL_INCDIR="C:\Program Files\OpenSSL-Win64\include"
+# -icu  ?
+# -openssl-runtime OPENSSL_INCDIR="<path>" ?
+# -openssl-runt -I %OPENSSL_INCLUDE_x64% -L %OPENSSL_LIB_x64% ?
+    - name: Build
+      working-directory: ./build
+      run: |
+        vcvarsall x64 10.0.19041.0
+        jom
+    - name: Install
+      working-directory: ./build
+      run: |
+        vcvarsall x64 10.0.19041.0
+        jom install
+    - name: Package
+      working-directory: ./install
+      run: |
+        zip -r "../Qt 5.15.10 for Windows.zip" .
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: "Qt 5.15.10 for Windows"
+        path: "Qt 5.15.10 for Windows.zip"
+
+#  build_qtwebengine:
+#    runs-on: windows-2022
+#    needs: [build_qt]
+#    steps:
+#    - name: Clone repository
+#      uses: actions/checkout@v3
+#    - name: Setup
+#      run: |
+#        brew install ninja
+#        brew uninstall postgresql@14 # not Universal
+#        brew install coreutils
+#    - name: Download source
+#      run: |
+#        rm -rf /User/runner/Libary/Android
+#        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
+#        cd qt5source
+#        git checkout kde/5.15
+#        git submodule update --init --recursive --depth 1
+#        cd qtwebengine/src/3rdparty
+#        git apply -R ../../../../7ff159da.patch
+#        cd ../../..
+#    - name: Download already-built Qt
+#      uses: actions/download-artifact@v3
+#      with:
+#        name: "Qt 5.15.10 for macOS"
+#    - name: Unpack already-built Qt
+#      run: |
+#        unzip "Qt 5.15.10 for macOS.zip" -d ./install
+#    - name: Configure
+#      run: |
+#        cd qt5source
+#        mkdir build
+#        cd build
+#        ../../install/bin/qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" \
+#            ../qtwebengine \
+#            -- -no-webengine-geolocation -webengine-proprietary-codecs
+#    - name: Build
+#      working-directory: ./qt5source/build
+#      run: |
+#        echo "Note: using $((`sysctl -n hw.ncpu`+1)) parallel jobs"
+#        gtimeout 320m make -j$((`sysctl -n hw.ncpu`+1)) NINJAJOBS=-j2 || true
+#    - name: Cache Build Folder
+#      uses: actions/cache/save@v3
+#      id: cache
+#      with:
+#        path: ./qt5source
+#        key: ${{ runner.os }}-universal
+#
+#  build_qtwebengine_step2:
+#    runs-on: macos-12
+#    needs: [build_qtwebengine]
+#    steps:
+#    - name: Clone repository
+#      uses: actions/checkout@v3
+#    - name: Setup
+#      run: |
+#        brew install ninja
+#        brew uninstall postgresql@14 # not Universal
+#        brew install coreutils
+#    - name: Download already-built Qt
+#      uses: actions/download-artifact@v3
+#      with:
+#        name: "Qt 5.15.10 for macOS"
+#    - name: Unpack already-built Qt
+#      run: |
+#        unzip "Qt 5.15.10 for macOS.zip" -d ./install
+#    - name: Restore cached Build folder
+#      uses: actions/cache/restore@v3
+#      id: cache
+#      with:
+#        path: ./qt5source
+#        key: ${{ runner.os }}-universal
+#    - name: Build
+#      working-directory: ./qt5source/build
+#      run: |
+#        echo "Note: using $((`sysctl -n hw.ncpu`+1)) parallel jobs"
+#        gtimeout 330m make -j$((`sysctl -n hw.ncpu`+1)) NINJAJOBS=-j2 || true
+#    - name: Cache Build Folder
+#      uses: actions/cache/save@v3
+#      id: cache2ndstep
+#      with:
+#        path: ./qt5source
+#        key: ${{ runner.os }}-2ndstep-universal
+#
+#  build_qtwebengine_step3:
+#    runs-on: macos-12
+#    needs: [build_qtwebengine_step2]
+#    steps:
+#    - name: Clone repository
+#      uses: actions/checkout@v3
+#    - name: Setup
+#      run: |
+#        brew install ninja
+#        brew uninstall postgresql@14 # not Universal
+#    - name: Download already-built Qt
+#      uses: actions/download-artifact@v3
+#      with:
+#        name: "Qt 5.15.10 for macOS"
+#    - name: Unpack already-built Qt
+#      run: |
+#        unzip "Qt 5.15.10 for macOS.zip" -d ./install
+#    - name: Restore cached Build folder
+#      uses: actions/cache/restore@v3
+#      id: cache2ndstep
+#      with:
+#        path: ./qt5source
+#        key: ${{ runner.os }}-2ndstep-universal
+#    - name: Build
+#      working-directory: ./qt5source/build
+#      run: |
+#        echo "Note: using $((`sysctl -n hw.ncpu`)) parallel jobs"
+#        make -j$((`sysctl -n hw.ncpu`)) NINJAJOBS=-j2
+#    - name: Install
+#      working-directory: ./qt5source/build
+#      run: |
+#        make install -j2
+#    - name: Package
+#      working-directory: ./install
+#      run: |
+#        zip -r "../Qt 5.15.10 for macOS with QtWebEngine.zip" .
+#    - name: Upload
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: "Qt 5.15.10 for macOS with QtWebEngine"
+#        path: "Qt 5.15.10 for macOS with QtWebEngine.zip"
