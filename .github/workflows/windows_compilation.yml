@@ -20,6 +20,8 @@ jobs:
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
+        dir "C:\Program Files"
+        dir "C:\Program Files (x86)"
         dir "C:\Program Files\OpenSSL-Win64"
         dir "C:\Program Files (x86)\Microsoft Visual Studio\2019"
         dir "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC"
