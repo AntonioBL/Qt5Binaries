@@ -29,8 +29,8 @@ jobs:
     - name: Set PATH
       shell: bash
       run: |
-        echo "$PWD/qt5source/gnuwin32/bin" >> $GITHUB_PATH
-        echo "$PWD/jom" >> $GITHUB_PATH
+        echo "D:/a/Qt5Binaries/Qt5Binaries/qt5source/gnuwin32/bin" >> $GITHUB_PATH
+        echo "D:/a/Qt5Binaries/Qt5Binaries/jom" >> $GITHUB_PATH
     - name: Configure
       shell: cmd
       run: |
