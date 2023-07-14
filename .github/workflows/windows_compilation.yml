@@ -43,6 +43,7 @@ jobs:
             -skip qt3d ^
             -skip qtcharts ^
             -skip qtdatavis3d ^
+            -skip qtdocgallery ^
             -skip qtlocation ^
             -skip qtlottie ^
             -skip qtpurchasing ^
