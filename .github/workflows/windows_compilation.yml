@@ -27,27 +27,27 @@ jobs:
         mkdir build
         cd build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
-        ..\qt5source\configure -prefix ..\install -opensource -confirm-license -release -no-debug-and-release \
-            -nomake tests \
-            -skip qt3d \
-            -skip qtcharts \
-            -skip qtdatavis3d \
-            -skip qtlocation \
-            -skip qtlottie \
-            -skip qtpurchasing \
-            -skip qtquick3d \
-            -skip qtquicktimeline \
-            -skip qtscript \
-            -skip qtspeech \
-            -skip qtvirtualkeyboard \
-            -skip qtwebengine \
-            -skip qtwebglplugin \
-            -opengl dynamic \
-            -qt-zlib \
-            -qt-freetype \
-            -qt-harfbuzz \
-            -qt-libpng \
-            -qt-libjpeg \
+        ..\qt5source\configure -prefix ..\install -opensource -confirm-license -release -no-debug-and-release ^
+            -nomake tests ^
+            -skip qt3d ^
+            -skip qtcharts ^
+            -skip qtdatavis3d ^
+            -skip qtlocation ^
+            -skip qtlottie ^
+            -skip qtpurchasing ^
+            -skip qtquick3d ^
+            -skip qtquicktimeline ^
+            -skip qtscript ^
+            -skip qtspeech ^
+            -skip qtvirtualkeyboard ^
+            -skip qtwebengine ^
+            -skip qtwebglplugin ^
+            -opengl dynamic ^
+            -qt-zlib ^
+            -qt-freetype ^
+            -qt-harfbuzz ^
+            -qt-libpng ^
+            -qt-libjpeg ^
             -openssl-runtime OPENSSL_INCDIR="C:\Program Files\OpenSSL\include"
 # -icu  ?
 # -openssl-runtime OPENSSL_INCDIR="<path>" ?
