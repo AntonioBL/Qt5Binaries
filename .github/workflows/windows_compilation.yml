@@ -28,6 +28,8 @@ jobs:
         call "7z" x -y jom_1_1_3.zip -ojom
         echo "%CD%\jom" >> $GITHUB_PATH
         del jom_1_1_3.zip
+        dir "%CD%"
+        jom /H
         mkdir build
         cd build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
