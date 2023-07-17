@@ -67,15 +67,15 @@ jobs:
 # -openssl-runt -I %OPENSSL_INCLUDE_x64% -L %OPENSSL_LIB_x64% ?
     - name: Build
       shell: cmd
-      working-directory: C:\build
       run: |
+        cd C:\build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         echo %PATH%
         jom -j2
     - name: Install
       shell: cmd
-      working-directory: C:\build
       run: |
+        cd C:\build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         jom install -j2
     - name: Package
