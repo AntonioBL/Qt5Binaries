@@ -34,10 +34,11 @@ jobs:
     - name: Configure
       shell: cmd
       run: |
-        mkdir build
-        cd build
+        mkdir C:\build
+        cd C:\build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
-        ..\qt5source\configure -prefix ..\install -opensource -confirm-license -release -no-debug-and-release ^
+        "D:\a\Qt5Binaries\Qt5Binaries\qt5source\configure" -prefix "D:\a\Qt5Binaries\Qt5Binaries\install" -opensource -confirm-license ^
+            -release -no-debug-and-release ^
             -nomake tests ^
             -nomake examples ^
             -skip qt3d ^
@@ -66,14 +67,14 @@ jobs:
 # -openssl-runt -I %OPENSSL_INCLUDE_x64% -L %OPENSSL_LIB_x64% ?
     - name: Build
       shell: cmd
-      working-directory: ./build
+      working-directory: C:\build
       run: |
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         echo %PATH%
         jom -j2
     - name: Install
       shell: cmd
-      working-directory: ./build
+      working-directory: C:\build
       run: |
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         jom install -j2
