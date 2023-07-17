@@ -13,7 +13,6 @@ jobs:
       run: |
         Get-PSDrive
         Remove-Item -Path C:\Android -Force -Recurse
-        Remove-Item -Path C:\tools\nginx-1.25.1 -Force -Recurse
         Remove-Item -Path C:\msys64 -Force -Recurse
         Remove-Item -Path C:\SeleniumWebDrivers -Force -Recurse
         Remove-Item -Path C:\Miniconda -Force -Recurse
@@ -45,6 +44,7 @@ jobs:
       run: |
         mkdir C:\build
         cd C:\build
+        Get-PSDrive
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         "D:\a\Qt5Binaries\Qt5Binaries\qt5source\configure" -prefix "D:\a\Qt5Binaries\Qt5Binaries\install" -opensource -confirm-license ^
             -release -no-debug-and-release ^
@@ -78,6 +78,7 @@ jobs:
       shell: cmd
       run: |
         cd C:\build
+        Get-PSDrive
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         echo %PATH%
         jom -j2
