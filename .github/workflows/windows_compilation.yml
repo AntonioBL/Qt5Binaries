@@ -16,10 +16,13 @@ jobs:
         Remove-Item -Path C:\msys64 -Force -Recurse
         Remove-Item -Path C:\SeleniumWebDrivers -Force -Recurse
         Remove-Item -Path C:\Miniconda -Force -Recurse
+        Remove-Item -Path C:\Julia -Force -Recurse
+        Remove-Item -Path C:\tools -Force -Recurse
+        Remove-Item -Path C:\selenium -Force -Recurse
+        Remove-Item -Path C:\vcpkg -Force -Recurse
         docker image prune --all --force
         Get-PSDrive
         dir C:
-        dir C:\tools
         choco install -y git.install
         choco install -y wget
         choco install -y 7zip.install
@@ -42,9 +45,8 @@ jobs:
     - name: Configure
       shell: cmd
       run: |
-        mkdir C:\build
-        cd C:\build
-        Get-PSDrive
+        mkdir build
+        cd build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         "D:\a\Qt5Binaries\Qt5Binaries\qt5source\configure" -prefix "D:\a\Qt5Binaries\Qt5Binaries\install" -opensource -confirm-license ^
             -release -no-debug-and-release ^
@@ -77,15 +79,14 @@ jobs:
     - name: Build
       shell: cmd
       run: |
-        cd C:\build
-        Get-PSDrive
+        cd build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         echo %PATH%
         jom -j2
     - name: Install
       shell: cmd
       run: |
-        cd C:\build
+        cd build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         jom install -j2
     - name: Package
