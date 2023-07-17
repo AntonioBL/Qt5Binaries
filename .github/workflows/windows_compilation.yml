@@ -12,6 +12,10 @@ jobs:
     - name: Download source
       run: |
         Remove-Item -Path C:\Android -Force -Recurse
+        Remove-Item -Path C:\tools\nginx-1.25.1 -Force -Recurse
+        Remove-Item -Path C:\msys64 -Force -Recurse
+        Remove-Item -Path C:\SeleniumWebDrivers -Force -Recurse
+        Remove-Item -Path C:\Miniconda -Force -Recurse
         choco install -y git.install
         choco install -y wget
         choco install -y 7zip.install
