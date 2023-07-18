@@ -31,17 +31,10 @@ jobs:
         cd qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
-    - name: Get jom
-      shell: cmd
-      run: |
-        call "wget.exe" -q --show-progress --no-check-certificate "https://download.qt.io/official_releases/jom/jom_1_1_3.zip" -O jom_1_1_3.zip
-        call "7z" x -y jom_1_1_3.zip -ojom
-        del jom_1_1_3.zip
     - name: Set PATH
       shell: bash
       run: |
         echo "D:/a/Qt5Binaries/Qt5Binaries/qt5source/gnuwin32/bin" >> $GITHUB_PATH
-        echo "D:/a/Qt5Binaries/Qt5Binaries/jom" >> $GITHUB_PATH
     - name: Configure
       shell: cmd
       run: |
@@ -73,22 +66,19 @@ jobs:
             -qt-libpng ^
             -qt-libjpeg ^
             -openssl-runtime OPENSSL_INCDIR="C:\Program Files\OpenSSL\include"
-# -icu  ?
-# -openssl-runtime OPENSSL_INCDIR="<path>" ?
-# -openssl-runt -I %OPENSSL_INCLUDE_x64% -L %OPENSSL_LIB_x64% ?
     - name: Build
       shell: cmd
       run: |
         cd build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         echo %PATH%
-        jom -j2
+        nmake
     - name: Install
       shell: cmd
       run: |
         cd build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
-        jom install -j2
+        nmake install
     - name: Package
       working-directory: ./install
       run: |
