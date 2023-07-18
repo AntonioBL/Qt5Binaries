@@ -11,7 +11,6 @@ jobs:
       uses: actions/checkout@v3
     - name: Download source
       run: |
-        Get-PSDrive
         Remove-Item -Path C:\Android -Force -Recurse
         Remove-Item -Path C:\msys64 -Force -Recurse
         Remove-Item -Path C:\SeleniumWebDrivers -Force -Recurse
@@ -21,8 +20,6 @@ jobs:
         Remove-Item -Path C:\selenium -Force -Recurse
         Remove-Item -Path C:\vcpkg -Force -Recurse
         docker image prune --all --force
-        Get-PSDrive
-        dir C:
         choco install -y git.install
         choco install -y wget
         choco install -y 7zip.install
@@ -91,137 +88,153 @@ jobs:
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         jom install -j2
     - name: Package
+      shell: cmd
       working-directory: ./install
       run: |
-        zip -r "../Qt 5.15.10 for Windows.zip" .
+        call "7z" a -y -tzip "..\Qt 5.15.10 for Windows.zip" .
     - name: Upload
       uses: actions/upload-artifact@v3
       with:
         name: "Qt 5.15.10 for Windows"
         path: "Qt 5.15.10 for Windows.zip"
 
-#  build_qtwebengine:
-#    runs-on: windows-2022
-#    needs: [build_qt]
-#    steps:
-#    - name: Clone repository
-#      uses: actions/checkout@v3
-#    - name: Setup
-#      run: |
-#        brew install ninja
-#        brew uninstall postgresql@14 # not Universal
-#        brew install coreutils
-#    - name: Download source
-#      run: |
-#        rm -rf /User/runner/Libary/Android
-#        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
-#        cd qt5source
-#        git checkout kde/5.15
-#        git submodule update --init --recursive --depth 1
-#        cd qtwebengine/src/3rdparty
-#        git apply -R ../../../../7ff159da.patch
-#        cd ../../..
-#    - name: Download already-built Qt
-#      uses: actions/download-artifact@v3
-#      with:
-#        name: "Qt 5.15.10 for macOS"
-#    - name: Unpack already-built Qt
-#      run: |
-#        unzip "Qt 5.15.10 for macOS.zip" -d ./install
-#    - name: Configure
-#      run: |
-#        cd qt5source
-#        mkdir build
-#        cd build
-#        ../../install/bin/qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" \
-#            ../qtwebengine \
-#            -- -no-webengine-geolocation -webengine-proprietary-codecs
-#    - name: Build
-#      working-directory: ./qt5source/build
-#      run: |
-#        echo "Note: using $((`sysctl -n hw.ncpu`+1)) parallel jobs"
-#        gtimeout 320m make -j$((`sysctl -n hw.ncpu`+1)) NINJAJOBS=-j2 || true
-#    - name: Cache Build Folder
-#      uses: actions/cache/save@v3
-#      id: cache
-#      with:
-#        path: ./qt5source
-#        key: ${{ runner.os }}-universal
-#
-#  build_qtwebengine_step2:
-#    runs-on: macos-12
-#    needs: [build_qtwebengine]
-#    steps:
-#    - name: Clone repository
-#      uses: actions/checkout@v3
-#    - name: Setup
-#      run: |
-#        brew install ninja
-#        brew uninstall postgresql@14 # not Universal
-#        brew install coreutils
-#    - name: Download already-built Qt
-#      uses: actions/download-artifact@v3
-#      with:
-#        name: "Qt 5.15.10 for macOS"
-#    - name: Unpack already-built Qt
-#      run: |
-#        unzip "Qt 5.15.10 for macOS.zip" -d ./install
-#    - name: Restore cached Build folder
-#      uses: actions/cache/restore@v3
-#      id: cache
-#      with:
-#        path: ./qt5source
-#        key: ${{ runner.os }}-universal
-#    - name: Build
-#      working-directory: ./qt5source/build
-#      run: |
-#        echo "Note: using $((`sysctl -n hw.ncpu`+1)) parallel jobs"
-#        gtimeout 330m make -j$((`sysctl -n hw.ncpu`+1)) NINJAJOBS=-j2 || true
-#    - name: Cache Build Folder
-#      uses: actions/cache/save@v3
-#      id: cache2ndstep
-#      with:
-#        path: ./qt5source
-#        key: ${{ runner.os }}-2ndstep-universal
-#
-#  build_qtwebengine_step3:
-#    runs-on: macos-12
-#    needs: [build_qtwebengine_step2]
-#    steps:
-#    - name: Clone repository
-#      uses: actions/checkout@v3
-#    - name: Setup
-#      run: |
-#        brew install ninja
-#        brew uninstall postgresql@14 # not Universal
-#    - name: Download already-built Qt
-#      uses: actions/download-artifact@v3
-#      with:
-#        name: "Qt 5.15.10 for macOS"
-#    - name: Unpack already-built Qt
-#      run: |
-#        unzip "Qt 5.15.10 for macOS.zip" -d ./install
-#    - name: Restore cached Build folder
-#      uses: actions/cache/restore@v3
-#      id: cache2ndstep
-#      with:
-#        path: ./qt5source
-#        key: ${{ runner.os }}-2ndstep-universal
-#    - name: Build
-#      working-directory: ./qt5source/build
-#      run: |
-#        echo "Note: using $((`sysctl -n hw.ncpu`)) parallel jobs"
-#        make -j$((`sysctl -n hw.ncpu`)) NINJAJOBS=-j2
-#    - name: Install
-#      working-directory: ./qt5source/build
-#      run: |
-#        make install -j2
-#    - name: Package
-#      working-directory: ./install
-#      run: |
-#        zip -r "../Qt 5.15.10 for macOS with QtWebEngine.zip" .
-#    - name: Upload
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: "Qt 5.15.10 for macOS with QtWebEngine"
-#        path: "Qt 5.15.10 for macOS with QtWebEngine.zip"
+  build_qtwebengine:
+    runs-on: windows-2022
+    needs: [build_qt]
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v3
+    - name: Download source
+      run: |
+        Remove-Item -Path C:\Android -Force -Recurse
+        Remove-Item -Path C:\msys64 -Force -Recurse
+        Remove-Item -Path C:\SeleniumWebDrivers -Force -Recurse
+        Remove-Item -Path C:\Miniconda -Force -Recurse
+        Remove-Item -Path C:\Julia -Force -Recurse
+        Remove-Item -Path C:\tools -Force -Recurse
+        Remove-Item -Path C:\selenium -Force -Recurse
+        Remove-Item -Path C:\vcpkg -Force -Recurse
+        docker image prune --all --force
+        choco install -y git.install
+        choco install -y wget
+        choco install -y 7zip.install
+        choco install openssl
+        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
+        cd qt5source
+        git checkout kde/5.15
+        git submodule update --init --recursive --depth 1
+    - name: Get jom
+      shell: cmd
+      run: |
+        call "wget.exe" -q --show-progress --no-check-certificate "https://download.qt.io/official_releases/jom/jom_1_1_3.zip" -O jom_1_1_3.zip
+        mkdir tuxliketimeout
+        call "wget.exe" -q --show-progress --no-check-certificate "https://github.com/tuxliketimeout/releases/download/v1.0/tuxliketimeout.exe" -O tuxliketimeout\tuxliketimeout.exe
+        call "7z" x -y jom_1_1_3.zip -ojom
+        del jom_1_1_3.zip
+    - name: Set PATH
+      shell: bash
+      run: |
+        echo "D:/a/Qt5Binaries/Qt5Binaries/qt5source/gnuwin32/bin" >> $GITHUB_PATH
+        echo "D:/a/Qt5Binaries/Qt5Binaries/jom" >> $GITHUB_PATH
+        echo "D:/a/Qt5Binaries/Qt5Binaries/tuxliketimeout" >> $GITHUB_PATH
+    - name: Download already-built Qt
+      uses: actions/download-artifact@v3
+      with:
+        name: "Qt 5.15.10 for Windows"
+    - name: Unpack already-built Qt
+      shell: cmd
+      run: |
+        call "7z" x -y "Qt 5.15.10 for Windows.zip" -oinstall
+    - name: Configure
+      shell: cmd
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
+        cd qt5source
+        mkdir build
+        cd build
+        ..\..\install\bin\qmake ..\qtwebengine ^
+            -- -no-webengine-geolocation -webengine-proprietary-codecs
+    - name: Build
+      shell: cmd
+      working-directory: ./qt5source/build
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
+        tuxliketimeout 18000000 jom -j2 || cd .
+    - name: Cache Build Folder
+      uses: actions/cache/save@v3
+      id: cache
+      with:
+        path: ./qt5source
+        key: ${{ runner.os }}-Win
+
+  build_qtwebengine_step2:
+    runs-on: windows-2022
+    needs: [build_qtwebengine]
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v3
+    - name: Cleanup and install needed programs
+      run: |
+        Remove-Item -Path C:\Android -Force -Recurse
+        Remove-Item -Path C:\msys64 -Force -Recurse
+        Remove-Item -Path C:\SeleniumWebDrivers -Force -Recurse
+        Remove-Item -Path C:\Miniconda -Force -Recurse
+        Remove-Item -Path C:\Julia -Force -Recurse
+        Remove-Item -Path C:\tools -Force -Recurse
+        Remove-Item -Path C:\selenium -Force -Recurse
+        Remove-Item -Path C:\vcpkg -Force -Recurse
+        docker image prune --all --force
+        choco install -y git.install
+        choco install -y wget
+        choco install -y 7zip.install
+        choco install openssl
+    - name: Restore cached Build folder
+      uses: actions/cache/restore@v3
+      id: cache
+      with:
+        path: ./qt5source
+        key: ${{ runner.os }}-Win
+    - name: Get jom
+      shell: cmd
+      run: |
+        call "wget.exe" -q --show-progress --no-check-certificate "https://download.qt.io/official_releases/jom/jom_1_1_3.zip" -O jom_1_1_3.zip
+        mkdir tuxliketimeout
+        call "wget.exe" -q --show-progress --no-check-certificate "https://github.com/tuxliketimeout/releases/download/v1.0/tuxliketimeout.exe" -O tuxliketimeout\tuxliketimeout.exe
+        call "7z" x -y jom_1_1_3.zip -ojom
+        del jom_1_1_3.zip
+    - name: Set PATH
+      shell: bash
+      run: |
+        echo "D:/a/Qt5Binaries/Qt5Binaries/qt5source/gnuwin32/bin" >> $GITHUB_PATH
+        echo "D:/a/Qt5Binaries/Qt5Binaries/jom" >> $GITHUB_PATH
+        echo "D:/a/Qt5Binaries/Qt5Binaries/tuxliketimeout" >> $GITHUB_PATH
+    - name: Download already-built Qt
+      uses: actions/download-artifact@v3
+      with:
+        name: "Qt 5.15.10 for Windows"
+    - name: Unpack already-built Qt
+      shell: cmd
+      run: |
+        call "7z" x -y "Qt 5.15.10 for Windows.zip" -oinstall
+    - name: Build
+      shell: cmd
+      working-directory: ./qt5source/build
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
+        jom -j2
+    - name: Install
+      shell: cmd
+      working-directory: ./qt5source/build
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
+        jom install -j2
+    - name: Package
+      shell: cmd
+      working-directory: ./install
+      run: |
+        call "7z" a -y -tzip "..\Qt 5.15.10 for Windows with QtWebEngine.zip" .
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: "Qt 5.15.10 for Windows with QtWebEngine"
+        path: "Qt 5.15.10 for Windows with QtWebEngine.zip"
