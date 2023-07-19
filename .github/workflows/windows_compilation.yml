@@ -12,7 +12,6 @@ jobs:
     - name: Download source
       run: |
         Remove-Item -Path C:\Android -Force -Recurse
-        Remove-Item -Path C:\msys64 -Force -Recurse
         Remove-Item -Path C:\SeleniumWebDrivers -Force -Recurse
         Remove-Item -Path C:\Miniconda -Force -Recurse
         Remove-Item -Path C:\Julia -Force -Recurse
@@ -107,7 +106,6 @@ jobs:
     - name: Download source
       run: |
         Remove-Item -Path C:\Android -Force -Recurse
-        Remove-Item -Path C:\msys64 -Force -Recurse
         Remove-Item -Path C:\SeleniumWebDrivers -Force -Recurse
         Remove-Item -Path C:\Miniconda -Force -Recurse
         Remove-Item -Path C:\Julia -Force -Recurse
@@ -127,8 +125,6 @@ jobs:
       shell: cmd
       run: |
         call "wget.exe" -q --show-progress --no-check-certificate "https://download.qt.io/official_releases/jom/jom_1_1_3.zip" -O jom_1_1_3.zip
-        mkdir tuxliketimeout
-        call "wget.exe" -q --show-progress --no-check-certificate "https://github.com/tuxliketimeout/releases/download/v1.0/tuxliketimeout.exe" -O tuxliketimeout\tuxliketimeout.exe
         call "7z" x -y jom_1_1_3.zip -ojom
         del jom_1_1_3.zip
     - name: Set PATH
@@ -136,7 +132,6 @@ jobs:
       run: |
         echo "D:/a/Qt5Binaries/Qt5Binaries/qt5source/gnuwin32/bin" >> $GITHUB_PATH
         echo "D:/a/Qt5Binaries/Qt5Binaries/jom" >> $GITHUB_PATH
-        echo "D:/a/Qt5Binaries/Qt5Binaries/tuxliketimeout" >> $GITHUB_PATH
     - name: Download already-built Qt
       uses: actions/download-artifact@v3
       with:
@@ -159,7 +154,7 @@ jobs:
       working-directory: ./qt5source/build
       run: |
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
-        tuxliketimeout 18000000 jom -j2 || cd .
+        C:\msys64\usr\bin\timeout.exe 300m jom -j2 || cd .
     - name: Cache Build Folder
       uses: actions/cache/save@v3
       id: cache
@@ -176,7 +171,6 @@ jobs:
     - name: Cleanup and install needed programs
       run: |
         Remove-Item -Path C:\Android -Force -Recurse
-        Remove-Item -Path C:\msys64 -Force -Recurse
         Remove-Item -Path C:\SeleniumWebDrivers -Force -Recurse
         Remove-Item -Path C:\Miniconda -Force -Recurse
         Remove-Item -Path C:\Julia -Force -Recurse
@@ -198,8 +192,6 @@ jobs:
       shell: cmd
       run: |
         call "wget.exe" -q --show-progress --no-check-certificate "https://download.qt.io/official_releases/jom/jom_1_1_3.zip" -O jom_1_1_3.zip
-        mkdir tuxliketimeout
-        call "wget.exe" -q --show-progress --no-check-certificate "https://github.com/tuxliketimeout/releases/download/v1.0/tuxliketimeout.exe" -O tuxliketimeout\tuxliketimeout.exe
         call "7z" x -y jom_1_1_3.zip -ojom
         del jom_1_1_3.zip
     - name: Set PATH
@@ -207,7 +199,6 @@ jobs:
       run: |
         echo "D:/a/Qt5Binaries/Qt5Binaries/qt5source/gnuwin32/bin" >> $GITHUB_PATH
         echo "D:/a/Qt5Binaries/Qt5Binaries/jom" >> $GITHUB_PATH
-        echo "D:/a/Qt5Binaries/Qt5Binaries/tuxliketimeout" >> $GITHUB_PATH
     - name: Download already-built Qt
       uses: actions/download-artifact@v3
       with:
