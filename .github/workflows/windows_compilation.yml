@@ -118,6 +118,7 @@ jobs:
         choco install -y 7zip.install
         choco install -y python2
         choco install -y openssl
+        choco install -y ninja
         git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
         cd qt5source
         git checkout kde/5.15
@@ -186,6 +187,7 @@ jobs:
         choco install -y 7zip.install
         choco install -y python2
         choco install -y openssl
+        choco install -y ninja
     - name: Restore cached Build folder
       uses: actions/cache/restore@v3
       id: cache
