@@ -149,7 +149,7 @@ jobs:
       run: |
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         cd C:\qt5source
-        rm -rf .git
+        C:\msys64\usr\bin\find.exe . -name .git -type d -exec C:\msys64\usr\bin\rm.exe -rf {} +
         mkdir build
         cd build
         "D:\a\Qt5Binaries\Qt5Binaries\install\bin\qmake.exe" ..\qtwebengine ^
