@@ -23,8 +23,8 @@ jobs:
         choco install -y wget
         choco install -y 7zip.install
         choco install -y openssl
-        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
-        cd qt5source
+        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git C:\qt5source
+        cd C:\qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
     - name: Get jom
@@ -36,7 +36,7 @@ jobs:
     - name: Set PATH
       shell: bash
       run: |
-        echo "D:/a/Qt5Binaries/Qt5Binaries/qt5source/gnuwin32/bin" >> $GITHUB_PATH
+        echo "C:/qt5source/gnuwin32/bin" >> $GITHUB_PATH
         echo "D:/a/Qt5Binaries/Qt5Binaries/jom" >> $GITHUB_PATH
     - name: Configure
       shell: cmd
@@ -44,7 +44,7 @@ jobs:
         mkdir build
         cd build
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
-        "D:\a\Qt5Binaries\Qt5Binaries\qt5source\configure" -prefix "D:\a\Qt5Binaries\Qt5Binaries\install" -opensource -confirm-license ^
+        "C:\qt5source\configure" -prefix "D:\a\Qt5Binaries\Qt5Binaries\install" -opensource -confirm-license ^
             -release -no-debug-and-release ^
             -no-pch ^
             -nomake tests ^
@@ -119,8 +119,8 @@ jobs:
         choco install -y python2
         choco install -y openssl
         choco install -y ninja
-        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git qt5source
-        cd qt5source
+        git clone --branch kde/5.15 https://invent.kde.org/qt/qt/qt5.git C:\qt5source
+        cd C:\qt5source
         git checkout kde/5.15
         git submodule update --init --recursive --depth 1
     - name: Get jom
@@ -132,7 +132,7 @@ jobs:
     - name: Set PATH
       shell: bash
       run: |
-        echo "D:/a/Qt5Binaries/Qt5Binaries/qt5source/gnuwin32/bin" >> $GITHUB_PATH
+        echo "C:/qt5source/gnuwin32/bin" >> $GITHUB_PATH
         echo "D:/a/Qt5Binaries/Qt5Binaries/jom" >> $GITHUB_PATH
         echo "C:/Python27" >> $GITHUB_PATH
         echo "C:/Python27/Scripts" >> $GITHUB_PATH
@@ -148,14 +148,15 @@ jobs:
       shell: cmd
       run: |
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
-        cd qt5source
+        cd C:\qt5source
+        rm -rf .git
         mkdir build
         cd build
-        ..\..\install\bin\qmake ..\qtwebengine ^
+        "D:\a\Qt5Binaries\Qt5Binaries\install\bin\qmake.exe" ..\qtwebengine ^
             -- -no-webengine-geolocation -webengine-proprietary-codecs
     - name: Build
       shell: cmd
-      working-directory: ./qt5source/build
+      working-directory: C:\qt5source\build
       run: |
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         C:\msys64\usr\bin\timeout.exe 300m jom -j2 || cd .
@@ -163,8 +164,8 @@ jobs:
       uses: actions/cache/save@v3
       id: cache
       with:
-        path: ./qt5source
-        key: ${{ runner.os }}-Win
+        path: C:\qt5source
+        key: Windows-cache
 
   build_qtwebengine_step2:
     runs-on: windows-2022
@@ -192,8 +193,8 @@ jobs:
       uses: actions/cache/restore@v3
       id: cache
       with:
-        path: ./qt5source
-        key: ${{ runner.os }}-Win
+        path: C:\qt5source
+        key: Windows-cache
     - name: Get jom
       shell: cmd
       run: |
@@ -203,7 +204,7 @@ jobs:
     - name: Set PATH
       shell: bash
       run: |
-        echo "D:/a/Qt5Binaries/Qt5Binaries/qt5source/gnuwin32/bin" >> $GITHUB_PATH
+        echo "C:/qt5source/gnuwin32/bin" >> $GITHUB_PATH
         echo "D:/a/Qt5Binaries/Qt5Binaries/jom" >> $GITHUB_PATH
         echo "C:/Python27" >> $GITHUB_PATH
         echo "C:/Python27/Scripts" >> $GITHUB_PATH
@@ -217,13 +218,13 @@ jobs:
         call "7z" x -y "Qt 5.15.10 for Windows.zip" -oinstall
     - name: Build
       shell: cmd
-      working-directory: ./qt5source/build
+      working-directory: C:\qt5source\build
       run: |
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         jom -j2
     - name: Install
       shell: cmd
-      working-directory: ./qt5source/build
+      working-directory: C:\qt5source\build
       run: |
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 10.0.19041.0
         jom install -j2
